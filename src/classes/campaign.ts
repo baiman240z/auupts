@@ -3,19 +3,23 @@ import FtpClient from "ftp";
 import JSZip from "jszip";
 import iconv from "iconv-lite";
 import DeleteFile from "del";
-import { Util } from "./util";
-import { Config } from "./config";
+import {Util} from "./util";
+import {Config} from "./config";
 
 export class Campaign {
     private static _save(file: string, name: string, expire: string): Promise<string> {
         return new Promise((resolve, reject) => {
-            fs.readFile(file, { encoding : 'utf8' }, (err, data) => {
-                if (err) { throw err; }
+            fs.readFile(file, {encoding: 'utf8'}, (err, data) => {
+                if (err) {
+                    throw err;
+                }
                 data = data.replace(/(CAMPAIGN_NAME(?:.|\s)+?)<value>.+<\/value>/im, '$1<value>' + name + '</value>');
                 data = data.replace(/(EXPIRE(?:.|\s)+?)<value>[^<]+<\/value>/im, '$1<value>' + expire + ' 23:59:59</value>');
                 data = data.replace(/\r\n/g, "\n");
-                fs.writeFile(file, data, { encoding : 'utf8' }, (err) => {
-                    if (err) { reject(err); }
+                fs.writeFile(file, data, {encoding: 'utf8'}, (err) => {
+                    if (err) {
+                        reject(err);
+                    }
                     resolve(file);
                 });
             });
@@ -45,7 +49,9 @@ export class Campaign {
                 }
             }
             fs.readdir(localDir, (err, files) => {
-                if (err) { throw err; }
+                if (err) {
+                    throw err;
+                }
                 for (let k in files) {
                     let file = files[k];
                     let localFile = localDir + '/' + file;
@@ -99,7 +105,9 @@ export class Campaign {
                 });
 
                 ftp.on('close', (err) => {
-                    if (err) { reject(err); }
+                    if (err) {
+                        reject(err);
+                    }
                     resolve('adminpage');
                 });
 
@@ -132,12 +140,16 @@ export class Campaign {
                 });
 
                 ftp.on('error', (err) => {
-                    if (err) { reject(err); }
+                    if (err) {
+                        reject(err);
+                    }
                     throw err
                 });
 
                 ftp.on('close', (err) => {
-                    if (err) { reject(err); }
+                    if (err) {
+                        reject(err);
+                    }
                     resolve('contents');
                 });
 
@@ -234,7 +246,7 @@ export class Campaign {
 
     public static makeCsv(code: string) {
         let text = '';
-        for (let i=1;i<=2;i++) {
+        for (let i = 1; i <= 2; i++) {
             text += '09099999999,' + code + '000' + i + ',couponx' + code + '000' + i + ',0,1' + "\n";
         }
         return text;

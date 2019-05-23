@@ -1,6 +1,6 @@
 import electron from "electron";
 import fs from "fs";
-import { Campaign }  from "./classes/campaign";
+import {Campaign} from "./classes/campaign";
 
 let win: electron.BrowserWindow;
 
@@ -71,7 +71,9 @@ electron.ipcMain.on('csv', (e: any, codes: string[]) => {
             properties: ['openDirectory', 'createDirectory']
         },
         (dir: any) => {
-            if (!dir) { return }
+            if (!dir) {
+                return
+            }
             for (let code of codes) {
                 let file = dir + '/' + code + '.csv';
                 fs.writeFile(file, Campaign.makeCsv(code), (error) => {
@@ -81,5 +83,5 @@ electron.ipcMain.on('csv', (e: any, codes: string[]) => {
                 })
             }
         }
-    )
+    );
 });
