@@ -3,6 +3,7 @@ import {Util} from "./classes/util";
 import fs from "fs";
 import {Config} from "./classes/config";
 import EventEmitter = NodeJS.EventEmitter;
+import $ from "jquery";
 
 window.onload = () => {
 
