@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>auup</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/sunny/jquery-ui.css" integrity="sha384-NR7bY/1lS6L/5KlOrUAIw2Ne886qrd3kq1vKemEQv0cn7mygDTyKPtVAW8r+oZwJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+<div class="container">
+
+    <h1>auup</h1>
+
+    <div class="card">
+        <div class="card-header">setting</div>
+        <div class="card-body">
+            <form>
+                <div class="form-check form-check-inline">
+                    <input id="consumer" type="radio" class="form-check-input" name="target" value="consumer" checked>
+                    <label class="form-check-label" for="consumer">consumer</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input id="solution" type="radio" class="form-check-input" name="target" value="solution">
+                    <label class="form-check-label" for="solution">solution</label>
+                </div>
+                <span>|</span>
+                <div class="form-check form-check-inline ml-3">
+                    <input id="test" type="radio" class="form-check-input" name="env" value="test" checked>
+                    <label class="form-check-label" for="test">test</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input id="production" type="radio" class="form-check-input" name="env" value="production">
+                    <label class="form-check-label" for="production">production</label>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card mt-3">
+        <div class="card-header">campaigns</div>
+        <div class="card-body">
+            <form>
+                <div id="campaign-form">
+                </div>
+                <div class="mt-3 text-center">
+                    <button type="button" class="btn btn-sm btn-primary" name="save-btn">
+                        save
+                    </button>
+                    <button type="button" class="btn btn-sm btn-primary" name="csv-btn">
+                        csv
+                    </button>
+                    <button type="button" class="btn btn-sm btn-primary" name="send-btn">
+                        send
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="hidden-box" hidden>
+    <div class="campaign form-row mb-2">
+        <div class="col-9">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text" name="code"></div>
+                </div>
+                <input type="text" class="form-control" name="name">
+            </div>
+        </div>
+        <div class="col-3">
+            <input type="text" class="form-control dateform" name="expire">
+        </div>
+    </div>
+</div>
+
+<div id="wait">
+    <button type="button" class="close"><span>&times;</span></button>
+    <span class="message">しばらくお待ちください</span>
+</div>
+
+<script>
+    window.jQuery = window.$ = require('./node_modules/jquery/dist/jquery');
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script
+        src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+        integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+        crossorigin="anonymous"></script>
+<script>
+    require("./dist/app.js");
+</script>
+</body>
+
+</html>

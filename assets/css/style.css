@@ -1,0 +1,28 @@
+body {
+    min-height: 540px;
+}
+
+#wait {
+    position: fixed;
+    top: 40%;
+    z-index: 9999;
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+    font-weight: bold;
+    font-size: 120%;
+    display: none;
+    border-top: 2px solid;
+    border-bottom: 2px solid;
+    border-color: #000;
+}
+
+div.success {
+    background-color: #c8e5bc;
+    color: #31708f;
+}
+
+div.danger {
+    background-color: #f2dede;
+    color: #a94442;
+}
