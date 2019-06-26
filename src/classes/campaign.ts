@@ -224,8 +224,15 @@ export class Campaign {
                             if (matched) {
                                 this.mkDir(dataDir + matched[1]);
                             }
+
+                            const _savepath: string = dataDir + newName;
+
+                            if (f.dir) {
+                                resolve(_savepath);
+                                return;
+                            }
+
                             f.async('uint8array').then((content) => {
-                                const _savepath: string = dataDir + newName;
                                 fs.writeFile(_savepath, content, {encoding: "utf8"}, (err) => {
                                     if (err) {
                                         console.log('error:' + err);
@@ -233,6 +240,8 @@ export class Campaign {
                                     resolve(_savepath);
                                 });
                             });
+                        } else {
+                            resolve(name);
                         }
                     }));
                 }
