@@ -186,41 +186,34 @@ export class Campaign {
             }).then((zip: JSZip) => {
                 let promises = [];
 
-                const regContents = /テンプレートHTML\/(.+)$/;
-                const regAdminpage = /(?:送信メールテキスト|テンプレートメール)\/(.+)$/;
-                const regImage = /テンプレート画像\/(.+)$/;
                 const regDir = /^(.+)\/.+$/;
                 const dataDir = Util.basedir() + '/data/';
 
-                DeleteFile.sync(dataDir + 'contents');
-                this.mkDir(dataDir + 'contents');
-                DeleteFile.sync(dataDir + 'adminpage');
-                this.mkDir(dataDir + 'adminpage');
-                DeleteFile.sync(dataDir + 'image');
-                this.mkDir(dataDir + 'image');
+                let regs: Map<string, RegExp> = new Map<string, RegExp>();
+                const config = Config.get('dir-map');
+                for (let jpname in config) {
+                    regs.set(jpname, new RegExp(`${jpname}\/(.+)$`));
+                    DeleteFile.sync(dataDir + jpname);
+                    this.mkDir(dataDir + config[jpname]);
+                }
 
                 for (let name in zip.files) {
                     promises.push(new Promise((resolve) => {
                         let f = zip.files[name];
                         let newName: string | null = null;
 
-                        let matched = regContents.exec(name);
-                        if (matched) {
-                            newName = 'contents/' + matched[1];
-                        }
-
-                        matched = regAdminpage.exec(name);
-                        if (matched) {
-                            newName = 'adminpage/' + matched[1];
-                        }
-
-                        matched = regImage.exec(name);
-                        if (matched) {
-                            newName = 'image/' + matched[1];
+                        for (let jpname in config) {
+                            let reg: RegExp | undefined = regs.get(jpname);
+                            if (reg != undefined) {
+                                let matched = reg.exec(name);
+                                if (matched) {
+                                    newName = config[jpname] + '/' + matched[1];
+                                }
+                            }
                         }
 
                         if (newName != null) {
-                            matched = regDir.exec(newName);
+                            let matched = regDir.exec(newName);
                             if (matched) {
                                 this.mkDir(dataDir + matched[1]);
                             }
