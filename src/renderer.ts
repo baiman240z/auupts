@@ -94,6 +94,10 @@ window.onload = () => {
 
     findCampaign(Util.basedir() + '/data', 0);
 
+    $('button[name=clear-btn]').on('click', () => {
+        electron.ipcRenderer.send('clear');
+    });
+
     $('button[name=save-btn]').on('click', () => {
         let campaigns: any[] = [];
         $('#campaign-form div.campaign').each((index, element) => {

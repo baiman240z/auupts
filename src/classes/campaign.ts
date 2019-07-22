@@ -170,6 +170,10 @@ export class Campaign {
         }
     }
 
+    public static clear(): void {
+        DeleteFile.sync(Util.basedir() + '/data/');
+    }
+
     public static unzip(file: string, callback: Function) {
         fs.readFile(file, 'binary', (err, data) => {
             if (err) {

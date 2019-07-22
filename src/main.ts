@@ -23,6 +23,12 @@ electron.app.on('ready', () => {
     });
 });
 
+electron.ipcMain.on('clear', (e: electron.Event, file: string) => {
+    Campaign.clear();
+    e.sender.send('find-campaign');
+    e.sender.send('show-message', '削除しました', 'success');
+});
+
 electron.ipcMain.on('unzip', (e: electron.Event, file: string) => {
     e.sender.send('show-message', '解凍中......', 'success', false);
     Campaign.unzip(file, () => {
