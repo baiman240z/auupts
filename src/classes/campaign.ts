@@ -41,12 +41,10 @@ export class Campaign {
     }
 
     public static _send(ftp: FtpClient, localDir: string, remoteDir: string) {
-        ftp.mkdir(remoteDir, (err: Error) => {
+        ftp.mkdir(remoteDir, true, (err: Error) => {
             if (err) {
-                if (err.message != 'Create directory operation failed.') {
-                    console.log(err.message);
-                    throw err;
-                }
+                console.log(err.message);
+                throw err;
             }
             fs.readdir(localDir, (err, files) => {
                 if (err) {
