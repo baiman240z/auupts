@@ -73,10 +73,11 @@ export class Campaign {
 
     static send(code: string, target: string, env: string): Promise<string>[] {
         const serverConfig = Config.get(`server-${env}`);
+        const systemCode = Config.get('system-code');
         const basedir = Util.basedir();
         const dirmap: any = {
-            'consumer': 'p',
-            'solution': 'z'
+            'consumer': 'c',
+            'solution': 's'
         };
         const imgdir = dirmap[target];
         const protocol = 'https';
@@ -91,7 +92,7 @@ export class Campaign {
                         Campaign._send(
                             ftp,
                             `${basedir}/data/adminpage/${code}`,
-                            `/camp86/adminpage/lib/${protocol}/${target}/etc/${code}`
+                            `/${systemCode}/adminpage/lib/${protocol}/${target}/etc/${code}`
                         );
                     } catch (err) {
                         reject(err);
@@ -125,12 +126,12 @@ export class Campaign {
                         Campaign._send(
                             ftp,
                             `${basedir}/data/contents/${code}`,
-                            `/camp86/contents/lib/https/${imgdir}/etc/${code}`
+                            `/${systemCode}/contents/lib/https/${imgdir}/etc/${code}`
                         );
                         Campaign._send(
                             ftp,
                             `${basedir}/data/image/${code}`,
-                            `/camp86/contents/htdocs/https/${imgdir}/${code}`
+                            `/${systemCode}/contents/htdocs/https/${imgdir}/${code}`
                         );
                     } catch (err) {
                         reject(err);
