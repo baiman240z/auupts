@@ -1,4 +1,4 @@
-import electron from "electron";
+import electron, {IpcMainEvent} from "electron";
 import fs from "fs";
 import {Campaign} from "./classes/campaign";
 
@@ -23,13 +23,13 @@ electron.app.on('ready', () => {
     });
 });
 
-electron.ipcMain.on('clear', (e: electron.Event, file: string) => {
+electron.ipcMain.on('clear', (e: IpcMainEvent) => {
     Campaign.clear();
     e.sender.send('find-campaign');
     e.sender.send('show-message', '削除しました', 'success');
 });
 
-electron.ipcMain.on('unzip', (e: electron.Event, file: string) => {
+electron.ipcMain.on('unzip', (e: IpcMainEvent, file: string) => {
     e.sender.send('show-message', '解凍中......', 'success', false);
     Campaign.unzip(file, () => {
         e.sender.send('find-campaign');
@@ -37,7 +37,7 @@ electron.ipcMain.on('unzip', (e: electron.Event, file: string) => {
     });
 });
 
-electron.ipcMain.on('save', (e: electron.Event, campaigns: any[]) => {
+electron.ipcMain.on('save', (e: IpcMainEvent, campaigns: any[]) => {
     let promises: Promise<string>[] = [];
     for (let campaign of campaigns) {
         promises = promises.concat(
@@ -52,7 +52,7 @@ electron.ipcMain.on('save', (e: electron.Event, campaigns: any[]) => {
     });
 });
 
-electron.ipcMain.on('send', (e: any, codes: string[], target: string, env: string) => {
+electron.ipcMain.on('send', (e: IpcMainEvent, codes: string[], target: string, env: string) => {
     e.sender.send('show-message', '送信中......', 'success', false);
 
     let promises: Promise<string>[] = [];
@@ -69,25 +69,24 @@ electron.ipcMain.on('send', (e: any, codes: string[], target: string, env: strin
     });
 });
 
-electron.ipcMain.on('csv', (e: any, codes: string[]) => {
-    electron.dialog.showOpenDialog(
+electron.ipcMain.on('csv', async (e: IpcMainEvent, codes: string[]) => {
+    const result = await electron.dialog.showOpenDialog(
         win,
         {
             title: 'select directory',
             properties: ['openDirectory', 'createDirectory']
-        },
-        (dir: any) => {
-            if (!dir) {
-                return
-            }
-            for (let code of codes) {
-                let file = dir + '/' + code + '.csv';
-                fs.writeFile(file, Campaign.makeCsv(code), (error) => {
-                    if (error != null) {
-                        console.log(error);
-                    }
-                })
-            }
         }
     );
+
+    if (!result.canceled) {
+        const dir = result.filePaths[0];
+        for (let code of codes) {
+            let file = dir + '/' + code + '.csv';
+            fs.writeFile(file, Campaign.makeCsv(code), (error) => {
+                if (error != null) {
+                    console.log(error);
+                }
+            })
+        }
+    }
 });

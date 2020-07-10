@@ -1,8 +1,7 @@
-import electron from "electron";
+import electron, {IpcRendererEvent} from "electron";
 import {Util} from "./classes/util";
 import fs from "fs";
 import {Config} from "./classes/config";
-import EventEmitter = NodeJS.EventEmitter;
 import $ from "jquery";
 
 window.onload = () => {
@@ -135,11 +134,11 @@ window.onload = () => {
         );
     });
 
-    electron.ipcRenderer.on('log', (e: EventEmitter, text: string) => {
+    electron.ipcRenderer.on('log', (e: IpcRendererEvent, text: string) => {
         console.log(text);
     });
 
-    electron.ipcRenderer.on('show-message', (e: EventEmitter, message: string, style: string, isFade: boolean = true) => {
+    electron.ipcRenderer.on('show-message', (e: IpcRendererEvent, message: string, style: string, isFade: boolean = true) => {
         Util.showMessage(message, style, isFade);
     });
 
