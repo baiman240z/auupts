@@ -20,24 +20,25 @@ export class Campaign {
                     if (err) {
                         reject(err);
                     }
-                    resolve(file);
+
+                    fs.writeFile(
+                        file.replace('/contents/', '/adminpage/'),
+                        data,
+                        {encoding: 'utf8'}, (err) => {
+                            if (err) {
+                                reject(err);
+                            }
+                            resolve(file);
+                        }
+                    );
                 });
             });
         });
     }
 
-    public static save(code: string, name: string, expire: string): Promise<string>[] {
+    public static save(code: string, name: string, expire: string): Promise<string> {
         let dir = Util.basedir() + '/data';
-        let promises: Promise<string>[] = [];
-
-        promises.push(
-            Campaign._save(`${dir}/adminpage/${code}/config.xml`, name, expire)
-        );
-        promises.push(
-            Campaign._save(`${dir}/contents/${code}/config.xml`, name, expire)
-        );
-
-        return promises;
+        return Campaign._save(`${dir}/contents/${code}/config.xml`, name, expire);
     }
 
     public static _send(ftp: FtpClient, localDir: string, remoteDir: string) {
@@ -183,6 +184,7 @@ export class Campaign {
                 base64: false,
                 checkCRC32: false,
                 optimizedBinaryString: true,
+                // @ts-ignore
                 decodeFileName: (bytes: any) => {
                     return iconv.decode(bytes, 'sjis');
                 }

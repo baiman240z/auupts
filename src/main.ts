@@ -40,9 +40,7 @@ electron.ipcMain.on('unzip', (e: IpcMainEvent, file: string) => {
 electron.ipcMain.on('save', (e: IpcMainEvent, campaigns: any[]) => {
     let promises: Promise<string>[] = [];
     for (let campaign of campaigns) {
-        promises = promises.concat(
-            Campaign.save(campaign.code, campaign.name, campaign.expire)
-        );
+        promises.push(Campaign.save(campaign.code, campaign.name, campaign.expire));
     }
 
     Promise.all(promises).then(() => {

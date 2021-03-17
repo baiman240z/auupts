@@ -48,7 +48,7 @@ window.onload = () => {
         clone.find('input[name=expire]').datepicker();
 
         const xml = fs.readFileSync(
-            `${__dirname}/../data/adminpage/${code}/config.xml`,
+            `${__dirname}/../data/contents/${code}/config.xml`,
             {encoding: 'utf8'}
         );
         let matched = xml.match(/CAMPAIGN_NAME(?:.|\s)+?<value>(.+)<\/value>/im);
@@ -56,9 +56,9 @@ window.onload = () => {
             clone.find('[name=name]').val(matched[1]);
         }
 
-        matched = xml.match(/EXPIRE(?:.|\s)+<value>([0-9-]{10})[^<]*<\/value>/im);
+        matched = xml.match(/EXPIRE(?:.|\s)+?<value>([^<]+)<\/value>/im);
         if (matched) {
-            clone.find('[name=expire]').val(matched[1]);
+            clone.find('[name=expire]').val(matched[1].substr(0, 10));
         }
     };
 
