@@ -81,7 +81,7 @@ window.onload = () => {
                 let path = `${dir}/${file}`;
                 let stat = fs.lstatSync(path);
                 if (stat.isDirectory()) {
-                    let matched = path.match(/adminpage\/([a-z0-9]{4})/i);
+                    let matched = path.match(/adminpage\/([a-z0-9]+)/i);
                     if (matched) {
                         addForm(matched[1]);
                     }
